@@ -1,0 +1,32 @@
+function is = isfloat(A)
+%ISFLOAT True for floating point double arrays.
+%
+%   ISFLOAT(A) returns 1 if A is a floating point double array
+%   and 0 otherwise.
+%
+%   IMPORTANT REMARK:
+%   This function is needed ONLY for Matlab 6.x. In Matlab 7
+%   there exists a function with the same name, but that allows
+%   users to use also single floating data type (not possible
+%   in Matlab 6.x).
+%
+%   Example:
+%     isfloat(pi)
+%       returns 1 since pi is a floating point double array
+%     isfloat(single(pi))
+%       returns 0 since single is a floating point single type
+%     isfloat(int8(3))
+%       returns 0 since int8 is not a floating point double type
+
+%  Michela Redivo-Zaglia, University of Padova, Italy
+%       Email: Michela.RedivoZaglia@unipd.it
+%  Giuseppe Rodriguez, University of Cagliari, Italy
+%       Email: rodriguez@unica.it
+%
+%  Last revised June 9, 2006
+
+if (strcmp(class(A),'double'))
+   is = 1;
+else
+   is = 0;
+end

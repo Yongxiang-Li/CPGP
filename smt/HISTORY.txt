@@ -1,0 +1,25 @@
+2009/03/29	ver. 0.9 online
+2009/04/21	ver. 0.91 online
+	updated @smcirc/Contents.m and @smtoep/Contents.m
+	updated demo/tutorial.m
+	bug corrected in @smcirc/size.m and @smtoep/size.m
+	added min.m, max.m, diff.m, norm.m and cond.m in @smcirc/ and @smtoep/
+	added HISTORY.txt (this file)
+2009/05/10	ver. 0.92 online
+	updated demo/tutorial.m
+	modified smtgallery.m
+	numerical tests added in demo/tests/
+	modified smtcheck.m
+2011/12/1
+	error corrected in private/gaussian.m (wrong constant)
+	modified @smtoep/smtoep.m (warning for col(1)<>row(1))
+	updated demo/tutorial.m
+	modified smtcheck.m
+	modified smtconfig.m
+	updated files in demo/tests/
+	updated functions in @smcirc to reflect the new smtconfig mechanism
+	updated functions in @smtoep to reflect the new smtconfig mechanism
+	deleted directory @smtoep/private/
+	added directory demo/validate/
+2012/1/20	ver. 1.0 online
+
