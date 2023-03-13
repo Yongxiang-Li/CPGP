@@ -105,29 +105,30 @@ function [fit] = likelihood_at_decimal(para, fit) % likelihood at decimal
             end
             Gs = fit.F(1+p*k:end,:); % tail of G
             GG = fit.F'*fit.F-Gs'*Gs;    YY = fit.Y'*fit.Y-Ys'*Ys;    GY = fit.F'*fit.Y-Gs'*Ys;
-            r0 = fit.corr(delta, theta, T, (1:p)', 1);
-            r = k*r0/delta^2;    r(1) = r(1) + 1;
-            Rdelta = smcirc(r); % k*R/delta^2 + I
-            Gbl = mldivide(Rdelta, Gb);    Ybl = mldivide(Rdelta, Yb);
+            R0.c = fit.corr(delta, theta, p, (1:p)', 1);    R0.eig = abs(fft(R0.c))+eps;
+            Rd.c = k*R0.c/delta^2 + eye(p,1);    Rd.eig = real(fft(Rd.c));
+            RRd.eig = (k/delta^2) * (R0.eig ./ Rd.eig);
+            fftGb = fft(Gb);    fftYb = fft(Yb);
+            Gbl = ifft(Rd.eig .\ fftGb);    Ybl = ifft(Rd.eig .\ fftYb);
             SGG = (GG+k*Gb'*(Gbl-Gb))/delta^2;
             SGY = (GY+k*(Gbl-Gb)'*Yb)/delta^2;
             SYY = (YY+k*Yb'*(Ybl-Yb))/delta^2;
             if p1==0
                 B = SGG \ SGY; % beta
                 sigma2 = (SYY - B'*SGG*B)/n; % sigma
-                fit.likelihood(i) = -(n*log(sigma2*delta^2) + sum(log(real(eig(Rdelta)))) + n + n*log(2*pi))/2;
+                fit.likelihood(i) = -(n*log(sigma2*delta^2) + sum(log(Rd.eig)) + n + n*log(2*pi))/2;
             else
-                R = smcirc(r0);    RYb = R*Ybl;    RGb = R*Gbl;
-                Yd = Ys - (k/delta^2)*RYb(1:p1); % Y dot
-                Gd = Gs - (k/delta^2)*RGb(1:p1,:); % Gamma dot
-                r = r0 - (k/delta^2)*(R*mldivide(Rdelta,r0));    r(1) = r(1) + delta^2;
-                S = toep_chol(r(1:p1)); % Pi is a Toeplitz matrix instead of circulant matrix
+                RRdGb = ifft(RRd.eig .* fftGb);    RRdYb = ifft(RRd.eig .* fftYb);
+                rpi = R0.c - ifft(RRd.eig .* R0.eig) + delta^2*eye(p,1);
+                S = toep_chol(rpi(1:p1));
+                Gd = Gs - RRdGb(1:p1,:); % Gamma dot
+                Yd = Ys - RRdYb(1:p1); % Y dot
                 Gdl = S \ Gd;    GGd = Gdl'*Gdl;
                 Ydl = S \ Yd;    YYd = Ydl'*Ydl;
                 GYd = Gdl'*Ydl;
                 B = (SGG + GGd) \ (SGY + GYd); % beta
                 sigma2 = ((SYY+YYd) - B'*(SGG+GGd)*B)/n; % sigma
-                fit.likelihood(i) = -(n*log(sigma2) + 2*k*p*log(delta) + sum(log(real(eig(Rdelta)))) + sum(2*log(diag(S))) + n + n*log(2*pi))/2;
+                fit.likelihood(i) = -(n*log(sigma2) + 2*k*p*log(delta) + sum(log(Rd.eig)) + sum(2*log(diag(S))) + n + n*log(2*pi))/2;
             end
         end
        	fit.sigma(i) = sqrt(sigma2);
@@ -146,29 +147,30 @@ function [obj, fit] = likelihood_at_interger(para, data) % likelihood at interge
         Yb = data.Yb(1:p,i);    Ys = data.Ys(1:p1,i);
         Gb = data.Gb(1:p,:,i);    Gs = data.Gs(1:p1,:,i);
         GG = data.FF-Gs'*Gs;    YY = data.YY-Ys'*Ys;    GY = data.FY-Gs'*Ys;
-        r0 = data.corr(delta, theta, p, (1:p)', 1);
-        r = k*r0/delta^2;    r(1) = r(1) + 1;
-        Rdelta = smcirc(r); % k*R/delta^2 + I
-        Gbl = mldivide(Rdelta, Gb);    Ybl = mldivide(Rdelta, Yb);
+        R0.c = data.corr(delta, theta, p, (1:p)', 1);    R0.eig = abs(fft(R0.c))+eps;
+        Rd.c = k*R0.c/delta^2 + eye(p,1);    Rd.eig = real(fft(Rd.c));
+        RRd.eig = (k/delta^2) * (R0.eig ./ Rd.eig);
+        fftGb = fft(Gb);    fftYb = fft(Yb);
+        Gbl = ifft(Rd.eig .\ fftGb);    Ybl = ifft(Rd.eig .\ fftYb);
         SGG = (GG+k*Gb'*(Gbl-Gb))/delta^2;
       	SGY = (GY+k*(Gbl-Gb)'*Yb)/delta^2;
      	SYY = (YY+k*Yb'*(Ybl-Yb))/delta^2;
         if p1==0
             B = SGG \ SGY; % beta
             sigma2 = (SYY - B'*SGG*B)/n; % sigma
-            likelihood(p==data.P) = (n*log(sigma2*delta^2) + sum(log(real(eig(Rdelta)))) + n + n*log(2*pi))/2;
+            likelihood(p==data.P) = (n*log(sigma2*delta^2) + sum(log(Rd.eig)) + n + n*log(2*pi))/2;
         else
-            R = smcirc(r0);    RYb = R*Ybl;    RGb = R*Gbl;
-            Yd = Ys - (k/delta^2)*RYb(1:p1); % Y dot
-            Gd = Gs - (k/delta^2)*RGb(1:p1,:); % Gamma dot
-            r = r0 - (k/delta^2)*(R*mldivide(Rdelta,r0));    r(1) = r(1) + delta^2;
-            S = toep_chol(r(1:p1)); % Pi is a Toeplitz matrix instead of circulant matrix
+            RRdGb = ifft(RRd.eig .* fftGb);    RRdYb = ifft(RRd.eig .* fftYb);
+            rpi = R0.c - ifft(RRd.eig .* R0.eig) + delta^2*eye(p,1);
+            S = toep_chol(rpi(1:p1));
+            Gd = Gs - RRdGb(1:p1,:); % Gamma dot
+            Yd = Ys - RRdYb(1:p1); % Y dot
             Gdl = S \ Gd;    GGd = Gdl'*Gdl;
             Ydl = S \ Yd;    YYd = Ydl'*Ydl;
             GYd = Gdl'*Ydl;
             B = (SGG + GGd) \ (SGY + GYd); % beta
             sigma2 = ((SYY+YYd) - B'*(SGG+GGd)*B)/n; % sigma
-            likelihood(p==data.P) = (n*log(sigma2) + 2*k*p*log(delta) + sum(log(real(eig(Rdelta)))) + sum(2*log(diag(S))) + n + n*log(2*pi))/2;
+            likelihood(p==data.P) = (n*log(sigma2) + 2*k*p*log(delta) + sum(log(Rd.eig)) + sum(2*log(diag(S))) + n + n*log(2*pi))/2;
         end
         sigma(p==data.P) = sqrt(sigma2);
         beta(p==data.P,:) = B;
