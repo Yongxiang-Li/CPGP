@@ -1,25 +1,10 @@
 # CPGP
-Code for our recent paper: Yongxiang Li, Yuting Pu, Changming Cheng, and Qian Xiao. (2023). A Scalable Gaussian Process for Large-Scale Periodic Data. Technometrics. 
+Code for our recent paper: Yongxiang Li, Yuting Pu, Changming Cheng, and Qian Xiao. (2023). A Scalable Gaussian Process for Large-Scale Periodic Data. Technometrics. 65(3), 363–374.
 
 ------------------------------------------------------------------
 
 Abstract: 
-Abstract The periodic Gaussian process (PGP) has been increasingly used to model periodic data due to its high accuracy. Yet, computing the likelihood of PGP has a high computational complexity of \mathcal{O}\left(n^{3}\right) (n is the data size), which hinders its wide application. To address this issue, we propose a novel circulant PGP (CPGP) model for large-scale periodic data collected at grids that are commonly seen in signal processing applications. The proposed CPGP decomposes the log-likelihood of PGP into the sum of two computationally scalable composite log-likelihoods, which do not involve any approximations. Computing the likelihood of CPGP requires only \mathcal{O}\left(p^{2}\right) (or \mathcal{O}\left(p\log p\right) in some special cases) time for grid observations, where the segment length p is independent of and much smaller than n. Simulations and real case studies are presented to show the superiority of CPGP over some state-of-the-art methods, especially for applications requiring periodicity estimation. This new modeling technique can greatly advance the applicability of PGP in many areas and allow the modeling of many previously intractable problems. 
-
-------------------------------------------------------------------
-
-Citation:
-If you find our work useful in your research, please consider citing:
-@article{li2023scalable,
-  title={A scalable Gaussian process for large-scale periodic data},
-  author={Li, Yongxiang and Pu, Yuting and Cheng, Changming and Xiao, Qian},
-  journal={Technometrics},
-  number={just-accepted},
-  pages={1--14},
-  year={2023},
-  url = {http://arxiv.org/abs/2301.01412},
-  publisher={Taylor \& Francis}
-}
+The periodic Gaussian process (PGP) has been increasingly used to model periodic data due to its high accuracy. Yet, computing the likelihood of PGP has a high computational complexity of $\mathcal{O}\left(n^{3}\right)$ ($n$ is the data size), which hinders its wide application. To address this issue, we propose a novel circulant PGP (CPGP) model for large-scale periodic data collected at grids that are commonly seen in signal processing applications. The proposed CPGP decomposes the log-likelihood of PGP into the sum of two computationally scalable composite log-likelihoods, which do not involve any approximations. Computing the likelihood of CPGP requires only $\mathcal{O}\left(p^{2}\right)$ (or $\mathcal{O}\left(p\log p\right)$ in some special cases) time for grid observations, where the segment length $p$ is independent of and much smaller than $n$. Simulations and real case studies are presented to show the superiority of CPGP over some state-of-the-art methods, especially for applications requiring periodicity estimation. This new modeling technique can greatly advance the applicability of PGP in many areas and allow the modeling of many previously intractable problems. 
 
 ------------------------------------------------------------------
 
@@ -39,6 +24,21 @@ Notes:
 2. routine package also contains a comparison method NRCPE.m
 3. The results in simulation and real case study can be reproduced by the code in corresponding folders 
 4. The raw experimental data are also included (Public dataset like CWRU is not included)
+
+------------------------------------------------------------------
+
+Citation:
+If you find our work useful in your research, please consider citing:
+@article{li2023scalable,
+  title={A scalable Gaussian process for large-scale periodic data},
+  author={Li, Yongxiang and Pu, Yuting and Cheng, Changming and Xiao, Qian},
+  journal={Technometrics},
+  volume={65},
+  number={3},
+  pages={363–374},
+  year={2023},
+  publisher={Taylor \& Francis}
+}
 
 
 
