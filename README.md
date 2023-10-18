@@ -1,5 +1,7 @@
 # CPGP
+
 Code for our recent paper: Yongxiang Li, Yuting Pu, Changming Cheng, and Qian Xiao. (2023). A Scalable Gaussian Process for Large-Scale Periodic Data. Technometrics. 65(3), 363–374.
+Link: https://www.tandfonline.com/doi/full/10.1080/00401706.2023.2166124
 
 ------------------------------------------------------------------
 
@@ -39,6 +41,3 @@ If you find our work useful in your research, please consider citing:
   year={2023},
   publisher={Taylor \& Francis}
 }
-
-
-
