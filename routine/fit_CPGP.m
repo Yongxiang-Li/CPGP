@@ -33,7 +33,7 @@ function [ fit ] = fit_CPGP( P, Y, regr, corr, lob, upb, theta0 )
             [theta, ~, fit, ~] = boxmin(@likelihood_at_interger, theta0, lob, upb, data);
         end
     else % init theta0 via grid search
-        u = linspace(0,1,5);    [x1, x2] = meshgrid(u(2:end-1));
+        u = linspace(0,1,6);    [x1, x2] = meshgrid(u(2:end-1));
         thetas = lob + (upb-lob).*[x1(:),x2(:)];
         objs = nan(size(thetas,1),1);
         fits = [];
@@ -105,7 +105,7 @@ function [fit] = likelihood_at_decimal(para, fit) % likelihood at decimal
             end
             Gs = fit.F(1+p*k:end,:); % tail of G
             GG = fit.F'*fit.F-Gs'*Gs;    YY = fit.Y'*fit.Y-Ys'*Ys;    GY = fit.F'*fit.Y-Gs'*Ys;
-            R0.c = fit.corr(delta, theta, p, (1:p)', 1);    R0.eig = abs(fft(R0.c))+eps;
+            R0.c = fit.corr(delta, theta, T, (1:p)', 1);    R0.eig = abs(fft(R0.c))+eps;
             Rd.c = k*R0.c/delta^2 + eye(p,1);    Rd.eig = real(fft(Rd.c));
             RRd.eig = (k/delta^2) * (R0.eig ./ Rd.eig);
             fftGb = fft(Gb);    fftYb = fft(Yb);
