@@ -52,7 +52,7 @@ function [ fit ] = fit_CPGP( P, Y, regr, corr, lob, upb, theta0 )
     fit.theta0 = theta0;
     fit.thetahat = theta;
     [~, index] = max(fit.likelihood);
-	fit.betahat = fit.beta(index,:);
+	fit.betahat = fit.beta(index,:)';
     fit.sigmahat = fit.sigma(index);
     fit.period = fit.P(index);
 end
